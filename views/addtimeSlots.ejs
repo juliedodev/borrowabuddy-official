@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <title>Borrow a Buddy</title>
+  <!-- Favicon-->
+  <link rel="icon" type="image/x-icon" href="bootstrap-profile/assets/img/favicon.ico" />
+  <!-- Font Awesome icons (free version)-->
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+  <!-- Google fonts-->
+  <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic" rel="stylesheet" type="text/css" />
+  <!-- Third party plugin CSS-->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" rel="stylesheet" />
+  <!-- Core theme CSS (includes Bootstrap)-->
+  <link href="bootstrap-timeSlots/css/styles.css" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body id="page-top">
+  <!-- Navigation-->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
+    <div id ="navbar-contain" class="container">
+      <a id="aBorrowABuddy" class="navbar-brand js-scroll-trigger" href="/profile">Borrow a Buddy</a>
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto my-2 my-lg-0">
+          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/createSignUpSheet">Schedule a Buddy</a></li>
+          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/viewCreatedEvents">Edit My Borrowed Buddies</a></li>
+          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/viewPublishedSheets">View My Borrowed Buddies</a></li>
+          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/viewVolunteering">Volunteering Buddies</a></li>
+          <% if( typeof user !== 'undefined' ) { %>
+            <% console.log('user loggedin') %>
+          
+            
+            <li class="nav-item"><a class="nav-link js-scroll-trigger buttonLogOut">LOG OUT</a></li>
+           
+            
+          <% } %>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- Masthead-->
+  <header class="masthead">
+    <section class = "eventNameAndAddSlots">
+    <section class="eventDetails">
+
+      
+      
+      <% if (user.local.email) { %>
+        <h2> <%= eventDetails.eventTitle %></h2>
+      
+        <div class="btn-group" role="group" aria-label="Basic example">
+          <button type="button" class="btn btn-secondary buttonAddTimeSlotToggle">Add Individual Time Slot</button>
+          <button type="button" class="btn btn-secondary buttonAddRecurringSlotsToggle ">Add Recurring Time Slots</button>
+          
+        </div>
+        
+        
+      </section>
+      <section class ="secAddDatesAndTime">
+        
+        <section class ="secAddTimeSlots hideForm">
+
+        
+          
+          <form action ="/saveTimeSlots?id=<%= eventDetails._id %>" method ="POST" class ="addTimeSlots" id ="formAddTimeSlot">
+            
+            <section class ="eventName">
+              
+              <label for="eventName">Buddy</label>
+              <input type="text" class ="eventName" name="eventName" value ="<%= eventDetails.eventTitle %>" readonly>
+              
+            </section>
+            
+            <section class ="activityDate">
+              
+              <label for="todayDate">Date:</label>
+              <input type="date" id="eventDate" name="date">
+              
+            </section>
+            
+            <section class ="startTime">
+              
+              <label for="startTime">Start Time:</label>
+              <input type="time" id="startTime" name="startTime"
+              min="00:00" max="24:00" required>
+              
+            </section>
+            
+            <section class ="endTime">
+              
+              <label for="endTime">End Time:</label>
+              <input type="time" id="endTime" name="endTime"
+              min="00:00" max="24:00" required>
+              
+            </section>
+            
+            <section class ="activityDescription">
+              
+              <label for="activityDescription">Occasion:</label>
+              <input type="text" id="activityDescription" name="activityDescription" required>
+              
+            </section>
+            
+            <section class ="numberVolunteersNeeded">
+              
+              <label for="numberVolunteersNeeded">Quantity:</label>
+              <input type="number" id="numberVolunteersNeeded" name="numberVolunteersNeeded" required>
+              
+            </section>
+            
+            <button class ="buttonAddTimeSlots">Add Time Slot</button>
+            
+          </form>
+          
+        </section>
+        
+        <section class ="secAddRecurringTimes hideForm">
+          
+          <form action ="/addRecurringSlots?id=<%= eventDetails._id %>" method ="POST" class ="formAddRecurringTimes" id ="formAddRecurringSlots">
+            
+            <section class ="eventNameRecurring">
+              
+              <label for="eventNameRecurring">Event</label>
+              <input type="text" class ="eventNameRecurring" name="eventNameRecurring" value ="<%= eventDetails.eventTitle %>" readonly>
+              
+            </section>
+            
+            <section class ="secRecurringSlotName">
+              <label for="recurringSlotName">Recurring Slot Name:</label>
+              <input type="text" id="recurringSlotName" name="recurringSlotName" required>
+            </section>
+            
+            <section class ="secStartDate">
+              
+              <label for="startDate">Start Date:</label>
+              <input type="date" id="startDate" name="startDate">
+              
+            </section>
+            
+            <section class ="secEndDate">
+              
+              <label for="endDate">Start Date:</label>
+              <input type="date" id="endDate" name="endDate">
+              
+            </section>
+            
+            <section class ="secRecurringDay">
+              
+              <label for="recurringDay">Recurring Day:</label>
+              
+              <select name="recurringDay">
+                <option value="" selected></option>
+                <option value="Monday">Monday</option>
+                <option value="Tuesday">Tuesday</option>
+                <option value="Wednesday">Wednesday</option>
+                <option value="Thursday">Thursday</option>
+                <option value="Friday">Friday</option>
+                <option value="Saturday">Saturday</option>
+                <option value="Sunday">Sunday</option>
+              </select>
+              
+            </section>
+            
+            <section class ="startTimeRecurring">
+              
+              <label for="startTimeRecurring">Start Time:</label>
+              <input type="time" id="startTimeRecurring" name="startTimeRecurring"
+              min="00:00" max="24:00" required>
+              
+            </section>
+            
+            <section class ="endTimeRecurring">
+              
+              <label for="endTimeRecurring">End Time:</label>
+              <input type="time" id="endTimeRecurring" name="endTimeRecurring"
+              min="00:00" max="24:00" required>
+              
+            </section>
+            
+            <section class ="activityDescriptionRecurring">
+              
+              <label for="activityDescriptionRecurring">Occasion:</label>
+              <input type="text" id="activityDescriptionRecurring" name="activityDescriptionRecurring" required>
+              
+            </section>
+            
+            <section class ="numberVolunteersNeededRecurring">
+              
+              <label for="numberVolunteersNeededRecurring">Quantity:</label>
+              <input type="number" id="numberVolunteersNeededRecurring" name="numberVolunteersNeededRecurring" required>
+              
+            </section>
+            
+            
+            <button class ="buttonAddRecurringSlots">Add Recurring Slots</button>
+            <span><button class="getRecurringTimeSlots" data-recurringEventId =<%= eventDetails._id %> >Manage Recurring Slots</button></span>
+          </form>
+          
+        </section>
+        
+      </section>
+    </section>
+    </header>
+      
+      <section class = "displayTimeSlots">
+        
+        <table class="table">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col">Start Time</th>
+              <th scope="col">End Time</th>
+              <th scope="col">Occasion</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Edit/Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for(var i =0; i <timeSlots.length; i++) { %>
+              
+              <tr>
+                <!-- <th scope="row"></th> -->
+                <td><%= timeSlots[i].date %></td>
+                
+                <td><%= timeConverter(timeSlots[i].startTime) %></td>
+                <td><%=  timeConverter(timeSlots[i].endTime)%></td>
+                <td><%= timeSlots[i].activityDescription %></td>
+                <td><%= timeSlots[i].numberVolunteersNeeded %></td>
+                <td class = "secIcons">
+                  
+                  <span><i class="editAddTimeSlot fa fa-edit" data-id =<%= timeSlots[i]._id %> ></i></span>
+                  
+                  <span class ="spanTsTrash"><i class="trashAddTimeSlot fa fa-trash" data-idTrash =<%= timeSlots[i]._id %>  aria-hidden="true"></i></span>
+                  
+                </td>
+              </tr>
+              
+              <% } %>
+            </tbody>
+          </table>
+          
+          
+          
+        </section>
+        
+        <section class ="secPublicSignUpSheet">
+          <button class ="buttonPublicSignUpSheet hi" data-eventId = <%= eventDetails._id %>>Confirm</button>
+        </section>
+        
+        <% } %>
+        
+        <% if (user.local.email) { %>
+          
+          <div class="modal">
+            <div class="modal-header">
+              <span class="close-btn">&times;</span>
+              <h1></h1>
+              </div>
+              <div class="modal-content">
+                
+                <form action ="/editTimeSlot" method ="POST" class ="addTimeSlotsForm">
+                  
+                  <p>Date</p>
+                  <input type="date" name ="editDateSingle" value = "" class = "inputEditDateSingle">
+                  <i class="fas fa-calendar-alt"></i>
+                  
+                  <p>Start Time:</p>
+                  <input type="time" name="editStartTimeSingle" class="inputEditStartTimeSingle" 
+                  min="00:00" max="24:00">
+                  
+                  <p>End Time:</p>
+                  <input type="time" name="editEndTimeSingle" class="inputEditEndTimeSingle" 
+                  min="00:00" max="24:00">
+                  
+                  <p>Occasion</p>
+                  <textarea rows="3" name ="editEventDescriptionSingle" class = "inputEditDescriptionSingle" value =""></textarea>
+                  
+                  <p>Quantity</p>
+                  <input type="number" name="editNumVolunteersNeededSingle" class="inputNumberVolunteersNeededSingle">
+                  
+                  <input type="hidden" name ="editEventIdSingle" class = "inputEditEventIdSingle">
+                  
+                  <input type="hidden" name ="editRecurringIdSingle" class = "inputEditRecurringIdSingle">
+                  
+                  <input type="hidden" name ="editObjIdSingle" class = "inputEditObjIdSingle">
+                  
+                  <button class ="buttonEditedDetails">Save New Details</button>
+                  
+                </form>
+              </div>
+              <div class="modal-footer">
+                <h2></h2>
+              </div>
+            </div>
+            <% } %>
+            
+
+            <!-- Bootstrap core JS-->
+            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+            <!-- Third party plugin JS-->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+            <!-- Core theme JS-->
+            <script src="main.js"></script>
+            <script src="bootstrap-timeSlots/js/scripts.js"></script>
+          </body>
+          </html>
+          
+          
+          
